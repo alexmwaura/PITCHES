@@ -1,0 +1,6 @@
+{% macro display_pitch(Pitches) %}
+  {% for pitch in Pitches %}
+  <h1>{{pitch.title}}</h1>
+  <h3>{{pitch.pitch}}</h3>
+  {% endfor%}
+{% endmacro %}
