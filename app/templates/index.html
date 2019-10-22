@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block styles %}
+  {{ super() }}
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
+  <link rel="stylesheet" href="{{url_for('static',filename='css/index.css') }}" type='text/css'>
+{% endblock %}
+
+{%block content %}
+<h1 class='text-center'>{{message}}</h1> <hr>
+<br>
+<div class="container">
+  <div class="row">
+   
+    <div class="col-md-8">
+      <h2>All Pitches</h2>
+      <div class="row">
+        {% for pitch in pitches %}
+        <div class="col-sm-6">
+          <ul class='list-unstyled '>
+            <li class='style'>
+              <h3 class=text-primary>{{pitch.id}}</h3>
+              <h4>{{pitch.pitch}}</h4>
+              <p>By: {{pitch.user.username}}</p>
+              <a href="{{url_for('main.pitches',uname = current_user.username)}}"><button class='btn btn-primary'>Comment</button></a>
+            </li> <hr> <br>
+            </ul>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
