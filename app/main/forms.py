@@ -3,22 +3,22 @@ from wtforms import StringField,SubmitField,TextAreaField
 from wtforms.validators import Required
 
 class PitchForm(FlaskForm):
-    title = StringField('Pitch Title',validators = [Required()])
-    pitch = TextAreaField("Pitch review",validators =[Required()])
-   
-    submit = SubmitField("Submit")
+
+    content = TextAreaField('YOUR PITCH')
+    submit = SubmitField('Create Pitch')
 
 class UpdateProfile(FlaskForm):
     bio = TextAreaField("Tell us about you.",validators = [Required()])
     submit = SubmitField('Submit')    
 
 class CommentForm(FlaskForm):
-	description = TextAreaField('Add comment',validators=[Required()])
-	submit = SubmitField()
 
-class UpvoteForm(FlaskForm):
-	submit = SubmitField()
+    comment_id = TextAreaField('Comment', validators=[Required()])
+    submit = SubmitField('Sumbit') 
+
+class CategoriesForm(FlaskForm):
+    name = TextAreaField('Write your comment')
+    submit = SubmitField('Submit')
 
 
-class Downvote(FlaskForm):
-	submit = SubmitField()
+
