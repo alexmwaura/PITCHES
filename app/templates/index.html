@@ -1,35 +1,250 @@
-{% extends 'base.html' %}
-{% block styles %}
-  {{ super() }}
-  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
-  <link rel="stylesheet" href="{{url_for('static',filename='css/index.css') }}" type='text/css'>
-{% endblock %}
+{% extends 'base.html'%}
+{% import 'macros.html' as macro%}
 
-{%block content %}
-<h1 class='text-center'>{{message}}</h1> <hr>
-<br>
+{% block styles %}
+
+{{ super() }}
+
+<link rel="stylesheet" href="{{url_for('static', filename = 'CSS/index.css')}}">
+{% endblock %}
+{% block content %}
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.9/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./CSS/styles.css">
+    <!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.9/js/mdb.min.js"></script>
+
+    <script src="./scripts/jquery-3.4.1.js"></script>
+    <script src="./scripts/scripts.js"></script>
+
+
 <div class="container">
-  <div class="row">
-   
-    <div class="col-md-8">
-      <h2>All Pitches</h2>
-      <div class="row">
-        {% for pitch in pitches %}
-        <div class="col-sm-6">
-          <ul class='list-unstyled '>
-            <li class='style'>
-              <h3 class=text-primary>{{pitch.id}}</h3>
-              <h4>{{pitch.pitch}}</h4>
-              <p>By: {{pitch.user.username}}</p>
-              <a href="{{url_for('main.pitches',uname = current_user.username)}}"><button class='btn btn-primary'>Comment</button></a>
-            </li> <hr> <br>
-            </ul>
+
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            
+            <div class="modal-header">
+              <h4 class="modal-title">PITCH CATEGORIES</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+      
+            
+            <div class="modal-body" id="sidebars">
+              <h3>{{ macro.displayCategoryList(categories) }}</h3>
+            </div>
+      
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+      
+          </div>
         </div>
-        {% endfor %}
       </div>
-    </div>
-  </div>
+
+
+    <section  id="section1">
+        <div class="v-center">
+
+
+            <div class="row">
+                <div class="col-md-4">
+          
+                    <button class="btn btn-warning">
+                        <p><a class="navbar-brand" href="/category/new" >ADD CATEGORY</a></p>
+                    </button><br><hr>
+                </div>
+          
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-primary" id="btn" data-toggle="modal" data-target="#myModal">
+                            Select the category Added
+                          </button>
+                          
+                          
+                      
+                    </div>
+          
+                
+              </div>
+        </div>
+        <a href="#section2">
+            <div class="scroll-down bounceInDown animated">
+                <span>
+                    <i class="fa fa-angle-down fa-2x"></i>
+                </span>
+            </div>
+            </a>
+    </section>
+
+
 </div>
+
+
+
+    
+
+
+    
+
+    
+
+
+
+    <style>
+    @import url(http://fonts.googleapis.com/css?family=Lato:300,400);
+@import url(http://fonts.googleapis.com/css?family=Bitter:400);
+
+html,body {
+	height:100%;
+    background:center no-repeat fixed url('http://worldstudieslahsportfolio.weebly.com/uploads/1/2/4/1/12418518/643596731.jpg');
+    background-size: cover;
+    color:#444;
+    font-family: 'Lato', sans-serif;
+}
+
+@media (min-width:768px) {
+    h1 {
+        font-size:68px;
+    }
+}
+
+#btn{
+  font-size: 20px;
+}
+
+
+.scroll-down {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  margin-left: -15px;
+  display: block;
+  padding: 7px;
+  text-align: center;
+  z-index:-1
+}
+
+.scroll-up {
+  position: fixed;
+  display: none;
+  z-index: 999;
+  bottom: 2em;
+  right: 2em;
+}
+
+.scroll-up a {
+  background-color: rgba(135, 135, 135, 0.5);
+  display: block;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  color: #fff;
+  font-size: 15px;
+  line-height: 30px;
+}
+
+section {
+	padding-top:70px;  
+    padding-bottom:50px;
+    min-height:100%;
+    min-height:calc(100% - 0);
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+@media (min-width:768px) {
+    .v-center {
+        height: 50%;
+        overflow: visible;
+        margin: auto;
+        position: absolute;
+        top: 0; left: 0; bottom: 0; right: 0;
+    }
+}
+  
+#section1{
+	background-color: rgba(0,0,0,0.7);
+	color:#fff;
+	font-family: 'Bitter', serif;
+}
+
+
+
+ 
+.button1 {
+    border-radius: 4px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 28px;
+    width: 200px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  .button1 .btn {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+  
+  .button1 .btn:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+  }
+  
+  .button1:hover .btn {
+    padding-right: 25px;
+  }
+  
+  .button1:hover .btn:after {
+    opacity: 1;
+    right: 0;
+  }
+   
+    </style>
+    
+
+
+
+
+    
+    
+            
 
 
 {% endblock %}

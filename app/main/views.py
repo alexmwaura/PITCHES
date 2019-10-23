@@ -1,73 +1,3 @@
-# from flask import render_template,request,redirect,url_for,abort
-# from . import main
-# from flask_login import login_required
-# from .forms import PitchForm,UpdateProfile
-# from .. import db
-# from ..models import Pitches,User
-
-
-# @main.route('/')
-# def index():
-#     '''
-#     View root page function that returns the indexpage and its data
-#     '''
-#     user = User.query.filter_by(username ='uname').first()
-#     pitches = Pitches.query.all()
-#     title = 'Welcome to one minute pitches'
-#     return render_template('index.html',pitches = pitches,title = title)
-
-
-
-
-
-# @main.route('/pitches/<uname>', methods=['GET','POST'])
-# @login_required
-# def pitches(uname):
-#   pitch_form = PitchForm()
-#   user = User.query.filter_by(username = uname).first()
-#   if pitch_form.validate_on_submit():
-#     pitch = Pitches(pitch = pitch_form.pitch.data,user = user)
-#     db.session.add(pitch)
-#     db.session.commit()
-#     return redirect(url_for('main.index'))
-
-#   title='Pitches'
-#   return render_template('pitch.html',title=title,pitch_form=pitch_form)
-
-
-# @main.route('/user/<uname>')
-# @login_required
-# def profile(uname):
-#     user = User.query.filter_by(username = uname).first()
-
-#     if user is None:
-#         abort(404)
-
-#     return render_template("profile/profile.html", user = user)
-    
-        
-
-# @main.route("/user/<uname>",methods = ["GET","POST"])
-# @login_required
-# def update_profile(uname):
-#     user = User.query.filter_by(username = uname).first()
-
-#     if user is None:
-#         abort(404)
-
-#     form = UpdateProfile()
-
-#     if form.validate_on_submit():
-#         user.bio = form.bio.data
-
-#         db.session.add(user)
-#         db.session.commit()
-
-#         return redirect(url_for('.profile',uname = user.username))
-
-#     return render_template('profile/update.html',form = form)
-
-
 from flask import render_template, request, redirect, url_for, abort
 from . import main
 from flask_login import login_required, current_user
@@ -80,13 +10,12 @@ from .. import db, photos
 def index():
     """View root page function that returns index page and the various news sources"""
 
-    title = 'Home- Welcome to the Pitch Website'
+    title = 'Welcome to one minute pitches'
     categories = PitchCategory.get_categories()
 
     return render_template('index.html', title=title, categories=categories)
 
 
-# Route for adding a new pitch
 
 @main.route('/category/pitch/new/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -103,13 +32,13 @@ def new_pitch(id):
     if form.validate_on_submit():
         actual_pitch = form.content.data
         new_pitch = Pitches(actual_pitch=actual_pitch,
-                            user_id=current_user.id, category_id=category.id)
+                            user_id=current_user.id, category_id=category.id,upvotes = 0,downvotes = 0)
         new_pitch.save_pitch()
         return redirect(url_for('.category', id=category.id))
 
     return render_template('new_pitch.html', pitch_form=form, category=category)
 
-# Routes for displaying the different pitches
+
 @main.route('/category/new',methods=['GET','POST'])
 @login_required
 def new_category():
@@ -151,9 +80,9 @@ def single_pitch(id):
     return render_template('pitch.html', pitches=pitches, comment=comment)
 
 
-# Routes for user authentication
-@main.route('/user/<uname>')
+
 @login_required
+@main.route('/user/<uname>')
 def profile(uname):
     user = User.query.filter_by(username=uname).first()
 
@@ -163,7 +92,7 @@ def profile(uname):
     return render_template("profile/profile.html", user=user)
 
 
-@main.route('/user/<uname>/update', methods=['GET', 'POST'])
+@main.route('/user/<uname>', methods=['GET', 'POST'])
 @login_required
 def update_profile(uname):
     user = User.query.filter_by(username=uname).first()
@@ -194,7 +123,7 @@ def update_pic(uname):
         db.session.commit()
     return redirect(url_for('main.profile', uname=uname))
 
-# Route to add commments.
+
 
 
 @main.route('/pitch/new/<int:id>', methods=['GET', 'POST'])
@@ -218,18 +147,19 @@ def new_comment(id):
 
     return render_template('comment.html', comment_form=form)
 
-# @main.route('/like/<id>')
-# @login_required
-# def like(id):
-# 	if Likes.query.filter(Likes.users_id==current_user.id,Likes.post_id==id).first():
-# 		return url_for('main.new_pitch',id=Likes.post_id)
-# 	Likes(users_id=current_user.id).save()
-# 	return url_for('main.new_pitch',id=Likes.post_id)
 
-# @main.route('/dislike/<id>')
-# @login_required
-# def dislike(id):
-# 	if Dislikes.query.filter(Dislikes.users_id==current_user.id,Dislikes.post_id==id).first():
-# 		return url_for('main.new_pitch',id=Dislikes.post_id)
-# 	Dislikes(users_id=current_user.id,post_id=id).save()
-# 	return url_for('main.new_pitch',id=Dislikes.post_id)
+@main.route('/like/<pitch_id>')
+@login_required
+def upvote(pitch_id):
+    pitches = Pitches.query.get(pitch_id)
+    pitches.like_pitch()
+
+    return redirect(url_for('main.single_pitch',id=pitch_id))
+
+@main.route('/dislike/<pitch_id>')
+@login_required
+def downvote(pitch_id):
+    pitches = Pitches.query.get(pitch_id)
+    pitches.dislike_pitch()
+
+    return redirect(url_for('main.single_pitch',id = pitch_id))    

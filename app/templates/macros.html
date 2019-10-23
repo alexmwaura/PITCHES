@@ -1,6 +1,70 @@
-{% macro display_pitch(Pitches) %}
-  {% for pitch in Pitches %}
-  <h1>{{pitch.title}}</h1>
-  <h3>{{pitch.pitch}}</h3>
-  {% endfor%}
+{% macro displayCategoryList(category_list) %}
+{% for category in category_list%}
+  <a href="/category/{{category.id}}">
+    <div class="container" id="items">
+      <p>{{category.name|upper}}</p>
+    </div>
+  </a>
+  {% endfor %}
 {% endmacro %}
+
+{% macro displayPitches(pitch_list) %}
+  {% for pitches in pitch_list %}
+  <div class="col-md-6">
+ 
+    <div class="card">
+      <img src="" alt="" style="width:100%">
+      
+      <p class="price"><small>POSTED: {{pitches.date_posted.strftime('%Y/%m/%d @ %r')}}</small></p>
+      <p><h1>{{pitches.actual_pitch}}</h1><hr></p>
+      <p><button> <a href="/pitch/{{pitches.id}}"><h4>COMMENT</h4></a> </button></p>
+    </div>
+
+
+  </div>
+
+
+
+  <style>
+  .card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.price {
+  color: grey;
+  font-size: 22px;
+}
+
+.card button {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+.card button:hover {
+  opacity: 0.7;
+}
+  
+  </style>
+
+
+  {% endfor %}
+{% endmacro %}
+
+
+{% macro displaySpecificPitch(specific_pitch_list) %}
+ {% for comment in specific_pitch_list %}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left">
+  <hr> {{comment.comment_id}}
+</div>
+{% endfor %}{% endmacro %}

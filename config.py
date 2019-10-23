@@ -14,7 +14,7 @@ class Config:
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
     
     
-
+    UPLOADED_PHOTOS_DEST ='app/static/photos'
 
     
 

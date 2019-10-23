@@ -75,6 +75,9 @@ class Pitches(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     actual_pitch = db.Column(db.String)
+    upvotes = db.Column(db.Integer)
+    downvotes = db.Column(db.Integer)
+
     date_posted = db.Column(db.DateTime, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     category_id = db.Column(db.Integer, db.ForeignKey("pitch_categories.id"))
@@ -86,6 +89,14 @@ class Pitches(db.Model):
         '''
         db.session.add(self)
         db.session.commit()
+    
+    def like_pitch(self):
+        self.upvotes += 1
+        self.save_pitch()
+
+    def dislike_pitch(self):
+        self.downvotes += 1
+        self.save_pitch()    
 
     @classmethod
     def clear_pitches(cls):

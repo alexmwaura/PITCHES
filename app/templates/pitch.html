@@ -1,31 +1,41 @@
-{% import 'bootstrap/wtf.html' as wtf %}
-{% extends 'bootstrap/base.html' %}
-{% include 'navbar.html'%}
+{% extends 'base.html' %}
+ {% import 'macros.html' as macro%}
 
+{%block styles%}
+  {{ super() }}
+{%endblock%}
 
-
-
+<!-- content block -->
 {% block content %}
 <div class="container">
-	<div class="row">
-		<div class="jumbotron">
-				{{wtf.quick_form(form)}}
-		<ul style="list-style: none;">
-				{% for pitch in pitches %}
-					<div class="list-group">
-						<a href="#">
-							<div class="list-item">
-								<p>{{pitch.id}}</p>
-							</div>
-							<h4>{{ pitch.description }}</h4>
-							<h6> Posted by {{user.username}}.</h6>
-						</a>
-					</div>
-				{% endfor %}
-		</ul>
-		</div>
-	</div>
+  <div class="col-md-6">
+    <div class="well">
+      <h3>{{pitches.actual_pitch}}</h3>
+
+      
+    </div>
+  </div>
+  <div class="col-md-6">
+      <h4>Comments:</h4>
+      {% if comment %}
+      {{ macro.displaySpecificPitch(comment)}}
+      <hr>
+      {%else%}
+      <h3 class="text-center">No comments </h3>
+      {% endif %}
+      <p class="text-right"><a class="btn btn-primary" href="/pitch/new/{{pitches.id}}">Add a comment</a></p>
+      <div class="col-md-3">
+        <a href="{{url_for('main.upvote',pitch_id=pitches.id)}}">{{pitches.upvotes}} <br> <button class="btn btn-success"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj1035T9Ua2yIvfXGeOw2Vez1OsLtE0nN0sR4T250cDHoIsFjf" height="40vh" width="40vh" alt=""> Like</button></a> 
+      </div>
+     <div class="col-md-3">
+      <a href="{{url_for('main.downvote',pitch_id=pitches.id)}}">{{pitches.downvotes}} <br> <button class="btn btn-danger"> <img src="https://www.seekpng.com/png/detail/189-1892948_popeye-png-akihabara-stati-popeye-cardboard-stand-up.png" alt="" height="40vh" width="40vh"> Dislike</button></a>
+     </div>
+
+      
+  </div>
+
+  
+  
 </div>
-	
-	
+
 {% endblock %}
