@@ -9,6 +9,7 @@ Pitcher is an application which enables one to pitch a certain category and can 
   - Adding a pitch category to the site
   - Commenting on other people's pitches and having an insight
   - Login and signup sheets
+  -Upload profile picture
 
 
 You can also:
